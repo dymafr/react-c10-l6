@@ -1,37 +1,20 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
-function VideoPlayer({ src, isPlaying }) {
-  const ref = useRef(null);
+function Timer() {
+  const [count, setCount] = useState(0);
 
   useEffect(() => {
-    if (isPlaying) {
-      ref.current.play();
-    } else {
-      ref.current.pause();
-    }
-  });
+    const id = setInterval(() => {
+      setCount((c) => c + 1);
+    }, 1000);
+    return () => {
+      clearInterval(id);
+    };
+  }, []);
 
-  return (
-    <video ref={ref} src={src} loop playsInline style={{ maxWidth: '600px' }} />
-  );
+  return <p className="m-10">{count}</p>;
 }
 
 export default function App() {
-  const [isPlaying, setIsPlaying] = useState(false);
-  return (
-    <>
-      <button
-        className="btn btn-primary m-10"
-        onClick={() => setIsPlaying(!isPlaying)}
-      >
-        {isPlaying ? 'Pause' : 'Play'}
-      </button>
-      <div>
-        <VideoPlayer
-          isPlaying={isPlaying}
-          src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
-        />
-      </div>
-    </>
-  );
+  return <Timer />;
 }
